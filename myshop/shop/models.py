@@ -15,7 +15,7 @@ class Category(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse_lazy('product_lust', args=[str(self.slug)])
+        return reverse_lazy('product_list', kwargs={'slug': self.slug})
 
 
 class Product(models.Model):
