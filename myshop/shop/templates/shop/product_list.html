@@ -388,7 +388,11 @@
 											<span class="sale">-20%</span>
 										</div>
 										<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
-										<img src="./img/product01.jpg" alt="">
+										{% if prod.image %}
+										<img src="{{prod.image.url}}" alt="" height="220" width="180"  >
+										{% else %}
+										<img src="{% static 'shop/img/no-image.jpeg' %}" alt="" >
+										{% endif %}
 									</div>
 									<div class="product-body">
 										<h3 class="product-price">{{prod.price}} <del class="product-old-price">$45.00</del></h3>

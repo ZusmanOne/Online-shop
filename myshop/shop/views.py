@@ -22,3 +22,9 @@ def product_detail(request, slug, product_id):
 def category_product(request, slug):
     context = Product.objects.filter(category__slug=slug)
     return render(request, 'shop/category_product.html', {'context': context})
+
+
+def product_detail(request, product_id):
+    object = get_object_or_404(Product, pk=product_id)
+    return render(request, 'shop/single_product.html', {'object':object})
+

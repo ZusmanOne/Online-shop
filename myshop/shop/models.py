@@ -22,7 +22,6 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
     name = models.CharField(max_length=100, db_index=True, verbose_name='Название товара')
     image = models.ImageField(upload_to='photo/%Y/%m/%d', blank=True)
-    slug = models.SlugField(max_length=100, unique=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     available = models.BooleanField(default=True)
     description = models.TextField(verbose_name='Описание товара', blank=True)
@@ -33,7 +32,7 @@ class Product(models.Model):
         ordering = ('-created',)
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
-        index_together = (('id','slug'),)
+
 
     def __str__(self):
         return self.name
