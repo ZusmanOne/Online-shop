@@ -1,5 +1,6 @@
 from django.shortcuts import render,get_object_or_404
 from .models import *
+from cart.forms import CartAddProductForm
 
 
 def index(request):
@@ -14,7 +15,8 @@ def product_list(request):
 
 def product_detail(request, slug, product_id):
     product_object = get_object_or_404(Product, slug=slug, pk=product_id)
-    return render(request, {'product_obj': product_object})
+
+    return render(request, {'product_obj': product_object, 'form': cart_product_form})
 # Create your views here.
 
 
@@ -26,5 +28,6 @@ def category_product(request, slug):
 
 def product_detail(request, product_id):
     object = get_object_or_404(Product, pk=product_id)
-    return render(request, 'shop/single_product.html', {'object':object})
+    cart_product_form = CartAddProductForm()
+    return render(request, 'shop/single_product.html', {'object':object,'form': cart_product_form })
 

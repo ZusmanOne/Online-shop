@@ -134,4 +134,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #создается ключ по которому бдут хранится данные корзины в сессии
-CART_SESSION_ID = 'cart'
+SESSION_CART_ID = 'cart'
