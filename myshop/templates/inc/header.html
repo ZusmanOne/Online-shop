@@ -84,41 +84,59 @@
 						<!-- Cart -->
 						<li class="header-cart dropdown default-dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+								{% with total_items=cart|length %}
 								<div class="header-btns-icon">
 									<i class="fa fa-shopping-cart"></i>
-									<span class="qty">3</span>
+									{% if cart|length > 0 %}
+									<span class="qty">{{total_items}}</span>
 								</div>
 								<strong class="text-uppercase">My Cart:</strong>
 								<br>
-								<span>35.20$</span>
+								<span>{{cart.total_price}}$</span>
+								{% else %}
+								<span class="qty">0</span>
+								</div>
+								<strong class="text-uppercase">My Cart:</strong>
+								<br>
+								<span>clear</span>
+
+								{% endif %}
+								{% endwith %}
+
 							</a>
 							<div class="custom-menu">
 								<div id="shopping-cart">
 									<div class="shopping-cart-list">
+										{% for item in cart %}
+										{% with product=item.product %}
 										<div class="product product-widget">
 											<div class="product-thumb">
-												<img src="{static  'shop/img/thumb-product01.jpg' %}" alt="">
+												{% if product.image %}
+												<img src="{{product.image.url}}" alt="">
+												{% else %}
+												<img src="{% static 'shop/img/no-image.jpeg' %}" alt="">
+												{% endif %}
 											</div>
 											<div class="product-body">
-												<h3 class="product-price">$32.50 <span class="qty">x3</span></h3>
-												<h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
+												<h3 class="product-price">{{item.price}} <span class="qty">{{item.quantity}}</span></h3>
+												<h2 class="product-name"><a href="{{product.get_absolute_url}}">{{product.name}}</a></h2>
 											</div>
-											<button class="cancel-btn"><i class="fa fa-trash"></i></button>
+											<form action="{% url 'cart:cart_remove' product.pk %}" method="post">
+												{% csrf_token %}
+												<button class="cancel-btn"><i class="fa fa-trash"></i></button>
+											</form>
+
 										</div>
-										<div class="product product-widget">
-											<div class="product-thumb">
-												<img src="{% static 'shop/img/thumb-product01.jpg' %}" alt="">
-											</div>
-											<div class="product-body">
-												<h3 class="product-price">$32.50 <span class="qty">x3</span></h3>
-												<h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
-											</div>
-											<button class="cancel-btn"><i class="fa fa-trash"></i></button>
-										</div>
+										{% endwith %}
+										{% endfor %}
 									</div>
 									<div class="shopping-cart-btns">
-										<button class="main-btn">View Cart</button>
+										<form action="{% url 'cart:cart_detail' %}" method="get">
+											<button class="main-btn">View Cart</button>
+
+										</form>
 										<button class="primary-btn">Checkout <i class="fa fa-arrow-circle-right"></i></button>
+
 									</div>
 								</div>
 							</div>

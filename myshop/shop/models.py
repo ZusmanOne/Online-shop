@@ -38,6 +38,7 @@ class Product(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse_lazy('product_detail', kwargs={'slug': self.slug})
+        return reverse_lazy('product_detail', kwargs={'product_id': self.pk})
+
 
 # Create your models here.
