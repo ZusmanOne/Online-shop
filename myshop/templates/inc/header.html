@@ -135,7 +135,11 @@
 											<button class="main-btn">View Cart</button>
 
 										</form>
-										<button class="primary-btn">Checkout <i class="fa fa-arrow-circle-right"></i></button>
+										<form action="{% url 'orders:order_create' %}" method="get">
+											<button class="primary-btn">Checkout <i class="fa fa-arrow-circle-right"></i></button>
+
+										</form>
+
 
 									</div>
 								</div>

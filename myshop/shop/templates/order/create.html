@@ -3,7 +3,7 @@
 {% load _mytag %}
 
 {% block sidebar %}
-<div id="navigation" xmlns="http://www.w3.org/1999/html">
+<div id="navigation">
 	<!-- container -->
 	<div class="container">
 		<div id="responsive-nav">
@@ -85,38 +85,19 @@
 		<div class="container">
 			<!-- row -->
 			<div class="row">
-				{% comment %}
-				<form id="checkout-form" class="_blank">
+
+
 					<div class="col-md-6">
 						<div class="billing-details">
 							<p>Already a customer ? <a href="#">Login</a></p>
 							<div class="section-title">
 								<h3 class="title">Billing Details</h3>
 							</div>
-							<div class="form-group">
-								<input class="input" type="text" name="first-name" placeholder="First Name">
-							</div>
-							<div class="form-group">
-								<input class="input" type="text" name="last-name" placeholder="Last Name">
-							</div>
-							<div class="form-group">
-								<input class="input" type="email" name="email" placeholder="Email">
-							</div>
-							<div class="form-group">
-								<input class="input" type="text" name="address" placeholder="Address">
-							</div>
-							<div class="form-group">
-								<input class="input" type="text" name="city" placeholder="City">
-							</div>
-							<div class="form-group">
-								<input class="input" type="text" name="country" placeholder="Country">
-							</div>
-							<div class="form-group">
-								<input class="input" type="text" name="zip-code" placeholder="ZIP Code">
-							</div>
-							<div class="form-group">
-								<input class="input" type="tel" name="tel" placeholder="Telephone">
-							</div>
+							<form id="place-holder" action="." method="post" class="order-form">
+							{{form.as_p}}
+							{% csrf_token %}
+							</form>
+							{% comment %}
 							<div class="form-group">
 								<div class="input-checkbox">
 									<input type="checkbox" id="register">
@@ -128,8 +109,11 @@
 									</div>
 								</div>
 							</div>
+							{% endcomment %}
 						</div>
 					</div>
+
+
 
 					<div class="col-md-6">
 						<div class="shiping-methods">
@@ -184,8 +168,8 @@
 							</div>
 						</div>
 					</div>
-                </form>
-				{% endcomment %}
+
+
 					<div class="col-md-12">
 						<div class="order-summary clearfix">
 							<div class="section-title">
@@ -259,12 +243,12 @@
 								</tfoot>
 							</table>
 							<div class="pull-right">
-								<form action="{% url 'orders:order_create' %}" method="get">
-								<button class="primary-btn">Place Order</button>
-								</form>
-							</div>
-						</div>
 
+							<button class="primary-btn" form="place-holder" >Place Order</button>
+
+							</div>
+
+						</div>
 					</div>
 
 			</div>
@@ -273,6 +257,7 @@
 		<!-- /container -->
 	</div>
 	<!-- /section -->
+
 
 
 	<!-- jQuery Plugins -->
