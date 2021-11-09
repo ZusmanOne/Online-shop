@@ -137,3 +137,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #создается ключ по которому бдут хранится данные корзины в сессии
 CART_SESSION_ID = 'cart'
+
+
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'bigmama93@mail.ru'
+EMAIL_HOST_PASSWORD = '09052012Alisa'
+EMAIL_USE_SSL = True
+
+
+
+

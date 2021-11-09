@@ -18,7 +18,7 @@ class Order(models.Model): # модель покупателя
         verbose_name_plural = 'Покупатели'
 
     def __str__(self):
-        return "Order №  %s" % self.pk
+        return "Заказ №  %s" % self.pk
 
     def get_total_cost(self):
         return sum(item.get_cost() for iten in self.items.all())

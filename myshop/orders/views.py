@@ -2,6 +2,10 @@ from django.shortcuts import render
 from .models import *
 from .forms import *
 from cart.cart import Cart
+from .tasks import order_created
+from django.core.mail import send_mail
+from django.dispatch import receiver
+from django.db.models.signals import pre_save,post_save
 
 
 def order_create(request):
@@ -14,8 +18,25 @@ def order_create(request):
                 OrderItem.objects.create(order=order, product= item['product'], price=item['price'],
                                          quantity=item['quantity'])
             cart.clean_cart()
+            order_created.delay(order.id) # запуск асинхронной задачи celery
             return render(request, 'order/created.html', {'order':order})
     else:
         form = OrderForm()
     return render(request, 'order/create.html', {'form':form,'cart': cart})
 # Create your views here.
+
+# отправлениe сообщения на почту
+# def order_message(order_id):
+#     orders = Order.objects.get(id=order_id)
+#     print(orders.id)
+#     subject = 'номер заказа'
+#     message = 'Здрасте  ваш номер заказа успешно оформлен'
+#     mail = send_mail(subject,message,from_email='bigmama93@mail.ru', recipient_list=[orders.email])
+#     return mail
+
+
+# @receiver(post_save, sender=Order)
+# def create_order(instance, created, **kwargs):
+#     if created:
+#         order_message(instance.pk)
+#         print('почта отправлена')
