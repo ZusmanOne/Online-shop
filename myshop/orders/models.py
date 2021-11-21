@@ -12,6 +12,7 @@ class Order(models.Model): # модель покупателя
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False, help_text="Оплачен ли заказ?")
+    braintree_id = models.CharField(max_length=150, blank=True)# это поле нужно ждя лпаты заказа(уникальный ID платежа)
 
     class Meta:
         verbose_name = 'Покупатель'
@@ -20,8 +21,8 @@ class Order(models.Model): # модель покупателя
     def __str__(self):
         return "Заказ №  %s" % self.pk
 
-    def get_total_cost(self):
-        return sum(item.get_cost() for iten in self.items.all())
+    def get_total_cost(self): # метод чтобы получить общую стоимость товаров в заказе
+        return sum(item.get_cost() for item in self.product_items.all())
 
 
 class OrderItem(models.Model): # Модель заказанного товара
@@ -34,8 +35,7 @@ class OrderItem(models.Model): # Модель заказанного товар�
         verbose_name = 'Заказанный товар'
         verbose_name_plural = 'Заказанные товары'
 
-    def __str__(self):
-        return self.id
+
 
     def get_cost(self):
         return self.price * self.quantity

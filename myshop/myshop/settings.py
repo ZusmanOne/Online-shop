@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'shop.apps.ShopConfig',
     'cart.apps.CartConfig',
     'orders.apps.OrdersConfig',
+    'payment.apps.PaymentConfig',
 ]
 
 MIDDLEWARE = [
@@ -146,5 +147,17 @@ EMAIL_HOST_PASSWORD = '09052012Alisa'
 EMAIL_USE_SSL = True
 
 
+#настройки для платежной системы Braintree
+BRAINTREE_MERCHANT_ID = 'rcmzktspv2x838kt' # ID продавца.
+BRAINTREE_PUBLIC_KEY = 'qynv6mp63pfyrp3d' # Публичный ключ.
+BRAINTREE_PRIVATE_KEY = '1d3ca80a4bc593f9c9e92f72caccb986' # Секретный ключ.
+
+from braintree import Configuration, Environment
+Configuration.configure(
+    Environment.Sandbox,
+    'rcmzktspv2x838kt',
+    'qynv6mp63pfyrp3d',
+    '1d3ca80a4bc593f9c9e92f72caccb986'
+)
 
 
