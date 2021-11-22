@@ -1,6 +1,12 @@
 import braintree
 from django.shortcuts import render, redirect, get_object_or_404
 from orders.models import Order
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
+from django.conf import settings
+import weasyprint
+from io import BytesIO
+
 
 
 def payment_process(request):
@@ -27,6 +33,22 @@ def payment_process(request):
             # Сохранение ID транзакции в заказе
             order.braintree_id = result.transaction.id
             order.save()
+            # отправление pdf-файла после оплаты
+            # создаем эл.сообщение
+            subject = 'My shop №{}'.format(order.id)
+            message = 'Пожалуйста, найдите в приложении счет за вашу недавнюю покупку.'
+            email = EmailMessage(subject,message,'bigmama93@mail.ru', [order.email])
+            # формирование самого pdf
+            html = render_to_string('order/pdf.html', {'order': order})
+            out = BytesIO()
+            stylesheets = [weasyprint.CSS(settings.STATIC_ROOT + '/shop/css/pdf.css')]
+            weasyprint.HTML(string=html).write_pdf(out, stylesheets=stylesheets)
+            # прикрепляем pdf к электронному сообщению
+            email.attach('order_{}.pdf'.format(order.id),
+                         out.getvalue(),
+                         'application/pdf')
+            # отправка сообщения
+            email.send()
             return redirect('payment:done')
         else:
             return redirect('payment:canceled')
@@ -42,5 +64,9 @@ def done(request):
 
 def canceled(request):
     return render(request, 'payment/canceled.html')
+
+
+
+
 
 # Create your views here.

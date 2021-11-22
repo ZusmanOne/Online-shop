@@ -53,6 +53,7 @@ from django.template.loader import render_to_string
 import weasyprint
 
 
+# Формирование pdf файла о заказе
 @staff_member_required
 def admin_order_pdf(request, order_id):
     order = get_object_or_404(Order, id=order_id)
