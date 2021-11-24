@@ -237,8 +237,15 @@
 									</tr>
 									<tr>
 										<th class="empty" colspan="3"></th>
+										<th>SALE</th>
+										{% if cart.coupon %}
+										<td colspan="2">-{{cart.get_discount}}</td>
+										{% endif %}
+									</tr>
+									<tr>
+										<th class="empty" colspan="3"></th>
 										<th>TOTAL</th>
-										<th colspan="2" class="total">{{cart.total_price}}</th>
+										<th colspan="2" class="total">{{cart.get_price_include_discount}}</th>
 									</tr>
 								</tfoot>
 							</table>
