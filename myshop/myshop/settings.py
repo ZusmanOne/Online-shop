@@ -162,3 +162,10 @@ Configuration.configure(
 )
 
 
+# настройки для Redis
+"""Эти настройки понадобятся, чтобы Django-приложение могло подключить-
+ся к серверу Redis."""
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_DB = 1
+
