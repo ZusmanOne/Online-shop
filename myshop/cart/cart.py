@@ -79,7 +79,12 @@ class Cart(object):  # Этот класс будет отвечать за ра
         if self.coupon:
             return ((self.total_price() * self.coupon.discount)
                     / Decimal('100'))
-        return Decimal('0')
+        else:
+            return self.total_price() * Decimal('0')
 
     def get_price_include_discount(self):
-        return self.total_price() - self.get_discount()
+        return (self.total_price() - self.get_discount())
+
+        print(self.get_discount(), self.get_price_include_discount())
+
+

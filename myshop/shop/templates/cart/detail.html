@@ -251,13 +251,14 @@
 										<th>SHIPING</th>
 										<td colspan="2">Free Shipping</td>
 									</tr>
+									{% if cart.coupon %}
 									<tr>
 										<th class="empty" colspan="3"></th>
 										<th>SALE</th>
-										{% if cart.coupon %}
+
 										<td colspan="2">{{cart.get_discount}}</td>
-										{% endif %}
 									</tr>
+									{% endif %}
 									<tr>
 										<th class="empty" colspan="3"></th>
 										<th>TOTAL</th>

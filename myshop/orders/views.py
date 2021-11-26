@@ -8,6 +8,7 @@ from django.dispatch import receiver
 from django.db.models.signals import pre_save,post_save
 from django.urls import reverse
 from django.contrib.admin.views.decorators import staff_member_required
+from coupons.models import Coupon
 
 
 def order_create(request):
@@ -16,6 +17,10 @@ def order_create(request):
         form = OrderForm(request.POST)
         if form.is_valid():
             order = form.save()
+            if cart.coupon:
+                order.coupon = cart.coupon
+                order.discount = cart.coupon.discount
+            order.save()
             for item in cart:
                 OrderItem.objects.create(order=order, product= item['product'], price=item['price'],
                                          quantity=item['quantity'])
