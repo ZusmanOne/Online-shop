@@ -1,10 +1,14 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404, HttpResponseRedirect
 from .models import *
 from cart.forms import CartAddProductForm
+from .recommender import Recommender
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
 
 
 def index(request):
-    return render(request, 'shop/index.html')
+    context = Product.objects.all()[:4]
+    return render(request, 'shop/index.html', {'context': context})
 
 
 def product_list(request):
@@ -15,7 +19,6 @@ def product_list(request):
 
 def product_detail(request, slug, product_id):
     product_object = get_object_or_404(Product, slug=slug, pk=product_id)
-
     return render(request, {'product_obj': product_object, 'form': cart_product_form})
 # Create your views here.
 
@@ -29,5 +32,22 @@ def category_product(request, slug):
 def product_detail(request, product_id):
     object = get_object_or_404(Product, pk=product_id)
     cart_product_form = CartAddProductForm()
-    return render(request, 'shop/single_product.html', {'object':object,'form': cart_product_form })
+    r = Recommender()
+    bought_product = r.products_bought([object])
+    print(bought_product)
+    recommended_products = r.suggest_products_for([object],4)
+    print(recommended_products)
+    return render(request, 'shop/single_product.html', {'object':object,'form': cart_product_form,
+                                                        'recommended': recommended_products})
 
+def register_user(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            if user is not None:
+                login(request, user)
+            return HttpResponseRedirect('/')
+    else:
+        form = UserCreationForm()
+    return render(request,'registration/registration.html', {'form':form})
