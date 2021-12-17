@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse_lazy
-
+from django.contrib.auth.models import User
 
 class Category(models.Model):
     name = models.CharField(max_length = 100, db_index=True, verbose_name='Наименование')
@@ -41,4 +41,13 @@ class Product(models.Model):
         return reverse_lazy('product_detail', kwargs={'product_id': self.pk})
 
 
+class Subscriber(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+
+    class Meta:
+        verbose_name = 'Подписчик'
+        verbose_name_plural = 'Подписчики'
+
+    def __str__(self):
+        return str(self.user)
 # Create your models here.

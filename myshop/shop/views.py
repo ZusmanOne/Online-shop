@@ -1,10 +1,17 @@
-from django.shortcuts import render,get_object_or_404, HttpResponseRedirect
+from django.shortcuts import render,get_object_or_404, HttpResponseRedirect, redirect
 from .models import *
 from cart.forms import CartAddProductForm
 from .recommender import Recommender
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django import forms
+from django.contrib import messages
+from django.contrib.auth.models import User
+
+
+
+
 
 @login_required(login_url='/accounts/signup/')
 def index(request):
@@ -56,3 +63,5 @@ def register_user(request):
     else:
         form = UserCreationForm()
     return render(request,'registration/registration.html', {'form':form})
+
+

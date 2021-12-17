@@ -69,3 +69,5 @@ def admin_order_pdf(request, order_id):
                                            stylesheets=[weasyprint.CSS(settings.STATIC_ROOT + '/shop/css/pdf.css')])
     return response
 
+def home(request):
+    return render(request, 'shop/a.html')

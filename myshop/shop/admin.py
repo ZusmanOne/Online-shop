@@ -18,5 +18,9 @@ class ProductAdmin(admin.ModelAdmin):
     save_on_top = True
     save_as = True
 
+class SubscriberAdmin(admin.ModelAdmin):
+    list_display = ('user',)
+
+admin.site.register(Subscriber,SubscriberAdmin)
 
 # Register your models here.
