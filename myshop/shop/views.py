@@ -4,19 +4,22 @@ from cart.forms import CartAddProductForm
 from .recommender import Recommender
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 
-
+@login_required(login_url='/accounts/signup/')
 def index(request):
     context = Product.objects.all()[:4]
     return render(request, 'shop/index.html', {'context': context})
 
 
+@login_required()
 def product_list(request):
     categories = Category.objects.all()
     products = Product.objects.filter(available=True)
     return render(request, 'shop/product_list.html', {'products': products,'categories': categories})
 
 
+@login_required()
 def product_detail(request, slug, product_id):
     product_object = get_object_or_404(Product, slug=slug, pk=product_id)
     return render(request, {'product_obj': product_object, 'form': cart_product_form})
@@ -24,6 +27,7 @@ def product_detail(request, slug, product_id):
 
 
 #товары по категориям
+@login_required()
 def category_product(request, slug):
     context = Product.objects.filter(category__slug=slug)
     return render(request, 'shop/category_product.html', {'context': context})
@@ -39,6 +43,7 @@ def product_detail(request, product_id):
     print(recommended_products)
     return render(request, 'shop/single_product.html', {'object':object,'form': cart_product_form,
                                                         'recommended': recommended_products})
+
 
 def register_user(request):
     if request.method == 'POST':

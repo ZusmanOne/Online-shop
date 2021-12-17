@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-+*=ob8h)0=o#kexq@l&+$mgusvq-cg^8lta-l#xe3gl!-26twt
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['mysite.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -43,7 +43,14 @@ INSTALLED_APPS = [
     'orders.apps.OrdersConfig',
     'payment.apps.PaymentConfig',
     'coupons.apps.CouponsConfig',
+    'social_django',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -53,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'myshop.urls'
@@ -69,10 +77,22 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'cart.context_processors.cart',
+                'social_django.context_processors.backends',  # <-- Here
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.google.GoogleOAuth2', # для рег-ии через гугл аккаунт
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend', # для пакета allauth чере него подвтерждаем пароль по почте
+
+)
 
 WSGI_APPLICATION = 'myshop.wsgi.application'
 
@@ -90,6 +110,7 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -120,7 +141,15 @@ USE_L10N = True
 
 USE_TZ = True
 
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '360212987476-t9vlsif67fr1g8om8r0bhfecqo597clt.apps.googleusercontent.com' # Google Consumer Key
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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' # Google Consumer Secret
 
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
@@ -129,7 +158,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'shop/static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-
 
 
 # Default primary key field type
@@ -146,7 +174,7 @@ EMAIL_PORT = 465
 EMAIL_HOST_USER = 'bigmama93@mail.ru'
 EMAIL_HOST_PASSWORD = '09052012Alisa'
 EMAIL_USE_SSL = True
-
+DEFAULT_FROM_EMAIL = 'bigmama93@mail.ru'
 
 #настройки для платежной системы Braintree
 BRAINTREE_MERCHANT_ID = 'rcmzktspv2x838kt' # ID продавца.

@@ -18,7 +18,7 @@ from django.urls import path
 from django.urls import include
 from django.conf import settings
 from django.conf.urls.static import static
-
+from django.contrib.auth import logout
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,7 +27,10 @@ urlpatterns = [
     path('order/', include('orders.urls')),
     path('cart/', include('cart.urls')),
     path('', include('shop.urls')),
-    path('accounts/', include('django.contrib.auth.urls')),
+    #path('accounts/', include('django.contrib.auth.urls')),
+    path('oauth/', include('social_django.urls', namespace ='social')),
+    path('accounts/', include ('allauth.urls')),
+
 
 ]
 
