@@ -8,12 +8,14 @@ from django.contrib.auth.decorators import login_required
 from django import forms
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.core.mail import EmailMultiAlternatives # отправка писем с разным содержимым
+from django.template.loader import get_template
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 
 
-
-
-@login_required(login_url='/accounts/signup/')
+@login_required(login_url='/accounts/login/')
 def index(request):
     context = Product.objects.all()[:4]
     return render(request, 'shop/index.html', {'context': context})
@@ -35,8 +37,8 @@ def product_detail(request, slug, product_id):
 
 #товары по категориям
 @login_required()
-def category_product(request, slug):
-    context = Product.objects.filter(category__slug=slug)
+def category_product(request, category_id):
+    context = Product.objects.filter(category_id=category_id)
     return render(request, 'shop/category_product.html', {'context': context})
 
 
@@ -65,3 +67,31 @@ def register_user(request):
     return render(request,'registration/registration.html', {'form':form})
 
 
+def subscriber_user(request):
+    if request.method == 'POST':
+        form = forms.Form(request.POST)
+        if form.is_valid():
+            created = Subscriber.objects.get_or_create(user=request.user)
+        return redirect('/')
+
+
+def send_mail_product(Product):
+    subject = 'Новинка недели'
+    from_email = 'bigmama93@mail.ru'
+    mail = Subscriber.objects.values('user__email')
+    to = []
+    for i in mail:
+        to.append(i['user__email'])
+    html_content = get_template('shop/mail/product_week.html')
+    context = {'product': Product}
+    html_render = html_content.render(context)
+    msg = EmailMultiAlternatives(subject=subject,body=html_render,to=to, from_email=from_email)
+    msg.attach_alternative(html_render, 'text/html')
+    msg.send()
+
+
+@receiver(post_save, sender=Product)
+def send_for_product_week(instance,created, **kwargs):
+    if created:
+        send_mail_product(instance)
+        print('почта отправлена')

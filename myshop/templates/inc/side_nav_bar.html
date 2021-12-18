@@ -11,7 +11,7 @@
 					<ul class="category-list">
 						{% sidebar as category %}
 						{% for cat in category %}
-						<li><a href="{% url 'category_product' cat.slug %}">{{cat.name}}</a></li>
+						<li><a href="{% url 'category_product' cat.id %}">{{cat.name}}</a></li>
 						{% endfor %}
 					</ul>
 				</div>

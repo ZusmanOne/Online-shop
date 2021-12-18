@@ -144,6 +144,11 @@
 		<!-- /container -->
 	</div>
 	<!-- /section -->
+               <form action="{% url 'subscriber' %}" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input class="btn btn-primary" type="submit" role="button" value="подписаться">
+                </form>
  <div class="col-md-4">
 
     </div>

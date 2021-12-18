@@ -48,6 +48,5 @@ class Subscriber(models.Model):
         verbose_name = 'Подписчик'
         verbose_name_plural = 'Подписчики'
 
-    def __str__(self):
-        return str(self.user)
+
 # Create your models here.
