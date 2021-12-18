@@ -1,4 +1,4 @@
-from django.shortcuts import render,get_object_or_404, HttpResponseRedirect, redirect
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect
 from .models import *
 from cart.forms import CartAddProductForm
 from .recommender import Recommender
@@ -12,6 +12,7 @@ from django.core.mail import EmailMultiAlternatives # отправка писе�
 from django.template.loader import get_template
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from shop.tasks import send_product_mail
 
 
 
@@ -75,7 +76,8 @@ def subscriber_user(request):
         return redirect('/')
 
 
-def send_mail_product(Product):
+def send_mail_product(product_id):
+    data = Product.objects.get(name=product_id)
     subject = 'Новинка недели'
     from_email = 'bigmama93@mail.ru'
     mail = Subscriber.objects.values('user__email')
@@ -83,7 +85,7 @@ def send_mail_product(Product):
     for i in mail:
         to.append(i['user__email'])
     html_content = get_template('shop/mail/product_week.html')
-    context = {'product': Product}
+    context = {'product': data}
     html_render = html_content.render(context)
     msg = EmailMultiAlternatives(subject=subject,body=html_render,to=to, from_email=from_email)
     msg.attach_alternative(html_render, 'text/html')
@@ -91,7 +93,7 @@ def send_mail_product(Product):
 
 
 @receiver(post_save, sender=Product)
-def send_for_product_week(instance,created, **kwargs):
+def send_for_product_week(instance,created,**kwargs):
     if created:
-        send_mail_product(instance)
-        print('почта отправлена')
+        send_product_mail.delay(instance.name)
+
