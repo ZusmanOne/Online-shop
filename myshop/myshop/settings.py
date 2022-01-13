@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'django_celery_beat', # для выполнение  celery задач по периодам
 
 ]
 
@@ -195,3 +196,4 @@ REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 REDIS_DB = 1
 
+CELERY_BEAT_SCHEDULER='django_celery_beat.schedulers:DatabaseScheduler'
