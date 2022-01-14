@@ -13,13 +13,16 @@ from django.template.loader import get_template
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from shop.tasks import send_product_mail
-
+from django.core.cache import cache
 
 
 @login_required(login_url='/accounts/login/')
 def index(request):
     context = Product.objects.all()[:4]
-    return render(request, 'shop/index.html', {'context': context})
+    num_visit = request.session.get('num_visit',0)
+    request.session['num_visit'] = num_visit + 1
+    visit = cache.get_or_set('num_visit', num_visit, 10)
+    return render(request, 'shop/index.html', {'context': context, 'num_visits':visit,})
 
 
 @login_required()
