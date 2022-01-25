@@ -26,16 +26,16 @@ def index(request):
 
 
 @login_required()
-def product_list(request):
-    categories = Category.objects.all()
+def product_list(request, slug):
+    categories = Category.objects.filter(slug=slug)
     products = Product.objects.filter(available=True)
     return render(request, 'shop/product_list.html', {'products': products,'categories': categories})
 
 
-@login_required()
-def product_detail(request, slug, product_id):
-    product_object = get_object_or_404(Product, slug=slug, pk=product_id)
-    return render(request, {'product_obj': product_object, 'form': cart_product_form})
+# @login_required()
+# def product_detail(request, slug, product_id):
+#     product_object = get_object_or_404(Product, slug=slug, pk=product_id)
+#     return render(request, {'product_obj': product_object, 'form': cart_product_form})
 # Create your views here.
 
 

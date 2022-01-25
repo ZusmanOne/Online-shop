@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load _mytag %}
+{% load static %}
 
 
 	{% block sidebar %}
@@ -86,8 +87,12 @@
 							<div class="slick-list draggable">
 								<div class="slick-track" style="opacity: 1; width: 1820px;">
 									<div class="product-view slick-slide slick-current slick-active" data-slick-index="0" aria-hidden="false" tabindex="0" style="width: 300px; position: relative; left: 120px; top: 0px; z-index: 999; opacity: 1; overflow: hidden;">
+										{%  if object.image %}
 										<img src="{{object.image.url}}" alt="">
 										<img role="presentation" src="{{object.image.url}}" class="zoomImg" style="position: absolute; top: -95.2273px; left: -643.488px; opacity: 0; width: 120px; height: 120px; border: none; "></div>
+										{% else %}
+										<img src="{% static 'shop/img/no-image.jpeg' %}" alt="" >
+										{% endif %}
 									<div class="product-view slick-slide" data-slick-index="1" aria-hidden="true" tabindex="-1" style="width: 455px; position: relative; left: -455px; top: 0px; z-index: 998; opacity: 0; overflow: hidden;">
 									</div>
 								</div>
@@ -95,7 +100,11 @@
 
 						<button class="slick-next slick-arrow" aria-label="Next" type="button" style="display: block;">Next</button></div>
 							<div class="slick-list draggable" style="padding: 0px 50px;"><div class="slick-track" style="opacity: 1; width: 1428px; transform: translate3d(-357px, 0px, 0px);"><div class="product-view slick-slide slick-cloned" data-slick-index="-4" aria-hidden="true" tabindex="-1" style="width: 119px;">
+								{%  if object.image %}
 								<img src="{{object.image.url}}" alt="" height="100" width="100" class="mr-3">
+								{% else %}
+								<img src="{% static 'shop/img/no-image.jpeg' %}" alt="" >
+								{% endif %}
                             </div>
                             </div>
 
@@ -253,6 +262,8 @@
 							<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
 							{% if p.image %}
 							<img src="{{p.image.url}}"  alt="" height="220" width="180">
+							{% else %}
+							<img src="{% static 'shop/img/no-image.jpeg' %}" alt="" >
 							{% endif %}
 						</div>
 						<div class="product-body">
