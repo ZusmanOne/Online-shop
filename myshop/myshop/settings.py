@@ -106,14 +106,26 @@ WSGI_APPLICATION = 'myshop.wsgi.application'
 #     }
 # }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'online_shop',
+#         'USER': 'postgres',
+#         'PASSWORD' : '12345678',
+#         'HOST': 'localhost',
+#         'PORT': 5432
+#     }
+# }
+
+# для докера
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'online_shop',
-        'USER': 'myshop',
-        'PASSWORD' : 'myshop',
-        'HOST': 'localhost',
-        'PORT' : '5432'
+        'USER': 'postgres',
+        'PASSWORD' : '12345678',
+        'HOST': 'db',
+        'PORT': 5432,
     }
 }
 

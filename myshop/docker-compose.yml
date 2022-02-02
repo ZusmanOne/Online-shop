@@ -1,9 +1,28 @@
 version: '3.7'
+
 services:
+  db:
+    image: postgres:12.7
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=online_shop
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=12345678
+      # - POSTGRES_HOST_AUTH_METHOD="trust"
+      - POSTGRES_PORT=5432
+
+
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python  /usr/src/online_shop/manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/usr/src/online_shop
     ports:
       - 8000:8000
+    depends_on:
+      - db
+volumes:
+  postgres_data:
+
+
