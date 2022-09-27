@@ -1,0 +1,353 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load _mytag %}
+
+{% block sidebar %}
+<div id="navigation" xmlns="http://www.w3.org/1999/html">
+	<!-- container -->
+	<div class="container">
+		<div id="responsive-nav">
+			<!-- category nav -->
+			<div class="category-nav show-on-click">
+				<span class="category-header">Categories <i class="fa fa-list"></i></span>
+				<ul class="category-list">
+					<li class="dropdown side-dropdown">
+						{% sidebar as category %}
+						{% for cat in category %}
+					<li><a href="{% url 'category_product' cat.slug %}">{{cat.name}}</a></li>
+					{% endfor %}
+				</ul>
+			</div>
+			<!-- /category nav -->
+
+			<!-- menu nav -->
+			<div class="menu-nav">
+				<span class="menu-header">Menu <i class="fa fa-bars"></i></span>
+				<ul class="menu-list">
+					<li class="dropdown mega-dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Women <i class="fa fa-caret-down"></i></a>
+						<div class="custom-menu">
+							<div class="row">
+								<div class="col-md-4">
+									<ul class="list-links">
+										<li>
+											<h3 class="list-links-title">Categories</h3></li>
+										<li><a href="#">Women’s Clothing</a></li>
+									</ul>
+									<hr class="hidden-md hidden-lg">
+								</div>
+								<div class="col-md-4">
+									<ul class="list-links">
+										<li>
+											<h3 class="list-links-title">Categories</h3></li>
+										<li><a href="#">Women’s Clothing</a></li>
+									</ul>
+									<hr class="hidden-md hidden-lg">
+								</div>
+								<div class="col-md-4">
+									<ul class="list-links">
+										<li>
+											<h3 class="list-links-title">Categories</h3></li>
+										<li><a href="#">Bags & Shoes</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li><a href="#">Sales</a></li>
+				</ul>
+			</div>
+			<!-- menu nav -->
+		</div>
+	</div>
+	<!-- /container -->
+</div>
+{% endblock %}
+
+
+
+
+{% block content %}
+<body>
+	<!-- BREADCRUMB -->
+	<div id="breadcrumb">
+		<div class="container">
+			<ul class="breadcrumb">
+				<li><a href="#">Home</a></li>
+				<li class="active">Checkout</li>
+			</ul>
+		</div>
+	</div>
+	<!-- /BREADCRUMB -->
+
+	<!-- section -->
+	<div class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+				{% comment %}
+				<form id="checkout-form" class="_blank">
+					<div class="col-md-6">
+						<div class="billing-details">
+							<p>Already a customer ? <a href="#">Login</a></p>
+							<div class="section-title">
+								<h3 class="title">Billing Details</h3>
+							</div>
+							<div class="form-group">
+								<input class="input" type="text" name="first-name" placeholder="First Name">
+							</div>
+							<div class="form-group">
+								<input class="input" type="text" name="last-name" placeholder="Last Name">
+							</div>
+							<div class="form-group">
+								<input class="input" type="email" name="email" placeholder="Email">
+							</div>
+							<div class="form-group">
+								<input class="input" type="text" name="address" placeholder="Address">
+							</div>
+							<div class="form-group">
+								<input class="input" type="text" name="city" placeholder="City">
+							</div>
+							<div class="form-group">
+								<input class="input" type="text" name="country" placeholder="Country">
+							</div>
+							<div class="form-group">
+								<input class="input" type="text" name="zip-code" placeholder="ZIP Code">
+							</div>
+							<div class="form-group">
+								<input class="input" type="tel" name="tel" placeholder="Telephone">
+							</div>
+							<div class="form-group">
+								<div class="input-checkbox">
+									<input type="checkbox" id="register">
+									<label class="font-weak" for="register">Create Account?</label>
+									<div class="caption">
+										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.
+											<p>
+												<input class="input" type="password" name="password" placeholder="Enter Your Password">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="shiping-methods">
+							<div class="section-title">
+								<h4 class="title">Shiping Methods</h4>
+							</div>
+							<div class="input-checkbox">
+								<input type="radio" name="shipping" id="shipping-1" checked>
+								<label for="shipping-1">Free Shiping -  $0.00</label>
+								<div class="caption">
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+										<p>
+								</div>
+							</div>
+							<div class="input-checkbox">
+								<input type="radio" name="shipping" id="shipping-2">
+								<label for="shipping-2">Standard - $4.00</label>
+								<div class="caption">
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+										<p>
+								</div>
+							</div>
+						</div>
+
+						<div class="payments-methods">
+							<div class="section-title">
+								<h4 class="title">Payments Methods</h4>
+							</div>
+							<div class="input-checkbox">
+								<input type="radio" name="payments" id="payments-1" checked>
+								<label for="payments-1">Direct Bank Transfer</label>
+								<div class="caption">
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+										<p>
+								</div>
+							</div>
+							<div class="input-checkbox">
+								<input type="radio" name="payments" id="payments-2">
+								<label for="payments-2">Cheque Payment</label>
+								<div class="caption">
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+										<p>
+								</div>
+							</div>
+							<div class="input-checkbox">
+								<input type="radio" name="payments" id="payments-3">
+								<label for="payments-3">Paypal System</label>
+								<div class="caption">
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+										<p>
+								</div>
+							</div>
+						</div>
+					</div>
+                </form>
+				{% endcomment %}
+					<div class="col-md-12">
+						<div class="order-summary clearfix">
+							<div class="section-title">
+								<h3 class="title">Order Review</h3>
+							</div>
+							<table class="shopping-cart-table table">
+								<thead>
+									<tr>
+										<th>Product</th>
+										<th></th>
+										<th class="text-center">Price</th>
+										<th class="text-center">Quantity</th>
+										<th class="text-center">Total</th>
+										<th class="text-right"></th>
+									</tr>
+								</thead>
+								<tbody>
+                                    {% for item in cart %}
+                                    {% with product=item.product %}
+									<tr>
+                                        {% if product.image %}
+										<td class="thumb"><img src="{{product.image.url}}" alt=""></td>
+                                        {% else %}
+                                        <td class="thumb"><img src="{% static 'shop/img/no-logo.jpg' %}" alt=""></td>
+                                        {% endif %}
+										<td class="details">
+											<a href="#">{{product.name}}</a>
+											<ul>
+												<li><span>Size: XL</span></li>
+												<li><span>Color: Camelot</span></li>
+											</ul>
+										</td>
+										<td class="price text-center"><strong>{{item.price}}</strong><br><del class="font-weak"><small>$40.00</small></del></td>
+                                        <td class="qty text-center">
+                                            <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                                                {{item.update_quantity_form.quantity}}
+                                                {{ item.update_quantity_form.update }}
+                                                <input type="submit" value="Update">
+                                                {% csrf_token %}
+                                            </form>
+                                        </td>
+										<td class="total text-center"><strong class="primary-color">{{item.total_price}}</strong></td>
+                                        <td class="text-right">
+                                            <form action="{% url 'cart:cart_remove' product.id %}" method="post">
+                                                {% csrf_token %}
+                                                <button class="main-btn icon-btn"><i class="fa fa-close"></i></button>
+                                            </form>
+                                        </td>
+									</tr>
+                                {% endwith %}
+                                {% endfor %}
+
+
+								</tbody>
+								<tfoot>
+									<tr>
+										<th class="empty" colspan="3"></th>
+										<th>SUBTOTAL</th>
+										<th colspan="2" class="sub-total">{{cart.total_price}}</th>
+									</tr>
+									<tr>
+										<th class="empty" colspan="3"></th>
+										<th>SHIPING</th>
+										<td colspan="2">Free Shipping</td>
+									</tr>
+									{% if cart.coupon %}
+									<tr>
+										<th class="empty" colspan="3"></th>
+										<th>SALE</th>
+
+										<td colspan="2">{{cart.get_discount}}</td>
+									</tr>
+									{% endif %}
+									<tr>
+										<th class="empty" colspan="3"></th>
+										<th>TOTAL</th>
+										<th colspan="2" class="total">{{cart.get_price_include_discount}}</th>
+									</tr>
+
+
+								</tfoot>
+
+							</table>
+							<p> <strong>ПРОМОКОД:</strong></p>
+							<form action="{% url 'coupons:apply' %}" method="post">
+								{{ coupon_apply_form }}
+								<input type="submit" value="Применить">
+								{% csrf_token %}
+							</form>
+							<div class="pull-right">
+								<form action="{% url 'orders:order_create' %}" method="get">
+									<button class="primary-btn">Place Order</button>
+								</form>
+							</div>
+						</div>
+
+					</div>
+
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /section -->
+{% if recommended %}
+<div class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+				<!-- section title -->
+				<div class="col-md-12">
+					<div class="section-title">
+						<h2 class="title">С этим товаром так же покупают:</h2>
+					</div>
+				</div>
+				<!-- section title -->
+				{% for p in recommended %}
+				<!-- Product Single -->
+				<div class="col-md-3 col-sm-6 col-xs-6">
+					<div class="product product-single">
+						<div class="product-thumb">
+							<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
+							{% if p.image %}
+							<img src="{{p.image.url}}"  alt="" height="220" width="180">
+							{% endif %}
+						</div>
+						<div class="product-body">
+							<h3 class="product-price">{{p.price}}</h3>
+							<div class="product-rating">
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star-o empty"></i>
+							</div>
+							<h2 class="product-name"><a href="{{p.get_absolute_url}}">{{p.name}}</a></h2>
+							<div class="product-btns">
+								<button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
+								<button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
+								<button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+				<!-- /Product Single -->
+
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+{% endif %}
+
+	<!-- jQuery Plugins -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/slick.min.js"></script>
+	<script src="js/nouislider.min.js"></script>
+	<script src="js/jquery.zoom.min.js"></script>
+	<script src="js/main.js"></script>
+
+</body>
+{% endblock %}

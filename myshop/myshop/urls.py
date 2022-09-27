@@ -15,7 +15,34 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.urls import include
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib.auth import logout
+from rest_framework import routers
+from shop.views import *
+
+# router = routers.DefaultRouter()
+# router.register(r'users', UserViewSet)
+# router.register(r'groups', GroupViewSet)
+# router.register(r'product_api', ProductsViewSet)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # path('drf/', include(router.urls)),
+    # path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('coupons/', include('coupons.urls')),
+    path('payment/', include('payment.urls')),
+    path('order/', include('orders.urls')),
+    path('cart/', include('cart.urls')),
+    path('', include('shop.urls')),
+    path('oauth/', include('social_django.urls', namespace ='social')),
+    path('accounts/', include('allauth.urls')),
+
+
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
