@@ -116,6 +116,11 @@
 							<div class="product-label">
 								<span>New</span>
 								<span class="sale">-20%</span>
+								<form action="{% url 'update_product' object.pk %}" method="post">
+									{{form}}
+									{% csrf_token  %}
+									<button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Изменить</button>
+									</form>
 							</div>
 							<h2 class="product-name">{{object.name}}</h2>
 							<h3 class="product-price">{{ object.price}} <del class="product-old-price">$45.00</del></h3>

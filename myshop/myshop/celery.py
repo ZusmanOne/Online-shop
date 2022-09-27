@@ -61,5 +61,6 @@ app.conf.beat_schedule = {
         'task': 'shop.tasks.send_product_mail_last_week',
         'schedule': crontab(),
 
+
     }
 }

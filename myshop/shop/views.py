@@ -14,6 +14,8 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from shop.tasks import send_product_mail
 from django.core.cache import cache
+from .forms import *
+
 
 
 @login_required(login_url='/accounts/login/')
@@ -100,3 +102,101 @@ def send_for_product_week(instance,created,**kwargs):
     if created:
         send_product_mail.delay(instance.name)
 
+
+def UpdateProduct(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    if request.method == 'POST':
+        form = UpdateProductForm(request.POST, instance=product) # при редактировании передаем объект product в аргумент
+        # instance
+        if form.is_valid():
+            product_update = product.save()
+            return redirect(product)
+    else:
+        form = UpdateProductForm(instance=product)
+    return render(request, 'shop/update_product.html', {'form': form})
+
+
+"""
+здесь будет описываться приложение для DRF
+"""
+
+from django.contrib.auth.models import User,Group
+from rest_framework import viewsets,permissions
+from shop.serializers import  ProductSerializer
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework import generics
+
+# class UserViewSet(viewsets.ModelViewSet):
+#     """
+#     Конечная точка API, которая позволяет просматривать или редактировать пользователей.
+#     """
+#     queryset = User.objects.all().order_by('-date_joined')
+#     serializer_class = UserSerializer
+#     permission_classes = [permissions.IsAuthenticated]
+#
+#
+# class GroupViewSet(viewsets.ModelViewSet):
+#     queryset = Group.objects.all()
+#     serializer_class = GroupSerializer
+#     permission_classes = [permissions.IsAuthenticated]
+#
+#
+# # class ProductsViewSet(viewsets.ModelViewSet):
+# #     queryset = Product.objects.all()
+# #     serializer_class = ProductSerializer
+# #     permission_classes = [permissions.IsAuthenticated]
+#
+# @api_view(['GET'])
+# def api_product(request):
+#     if request.method == 'GET':
+#         queryset = Product.objects.all()
+#         serializer = ProductSerializer(queryset, many = True) # many значит что нужно показывать все объекты
+#         return Response(serializer.data)
+#
+#
+# #сведения о каждом продукте
+# @api_view(['GET'])
+# def api_product_detail(request, product_id):
+#     if request.method == 'GET':
+#         queryset = Product.objects.filter(pk=product_id)
+#         serializer =ProductSerializer(queryset)
+#         return Response(serializer.data)
+#
+#
+# #свдеения о продуктах через класс
+# class ProductListView(generics.ListAPIView):  # только для чтения для представления коллекции экземпляров модели .
+#     queryset = Product.objects.all()
+#     serializer_class = ProductSerializer
+#
+#
+# class ProductDetailView(generics.RetrieveAPIView):  # только для чтения для представления одного экземпляра модели .
+#     queryset = Product.objects.all()
+#     serializer_class = ProductSerializer
+#
+#
+# class ProductViewsSet(viewsets.ReadOnlyModelViewSet):
+#     queryset = Product.objects.all()
+#     serializer_class = ProductSerializer
+
+
+from rest_framework.views import APIView
+
+
+class ProductList(APIView): # апи для всех сниппетов, реализованный через CBV
+    """
+    Отображает все сниппеты или создает новый сниппет.
+    """
+    # authentication_classes = [SessionAuthentication, BasicAuthentication]
+    # permission_classes = [IsAuthenticated]
+    def get(self, request, format=None):
+        snippet = Product.objects.all()
+        serializer = ProductSerializer(snippet, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = ProductSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -22,6 +22,7 @@ class ProductModelTest(TestCase):
         category = Category.objects.get(pk=1)
         self.assertEqual(category.get_absolute_url(), '/list/snowboard')
 
+
 class TestProductCase(TestCase):
     @classmethod
     def setUpTestData(cls):
